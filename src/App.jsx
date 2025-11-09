@@ -1,28 +1,48 @@
-import { useState } from 'react'
+import Hero from "./components/Hero";
+import PlanBuilder from "./components/PlanBuilder";
+import ReadinessTools from "./components/ReadinessTools";
+import InviteMentors from "./components/InviteMentors";
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-50 to-blue-50 flex items-center justify-center">
-      <div className="bg-white p-8 rounded-lg shadow-lg">
-        <h1 className="text-3xl font-bold text-gray-800 mb-4">
-          Vibe Coding Platform
-        </h1>
-        <p className="text-gray-600 mb-6">
-          Your AI-powered development environment
-        </p>
-        <div className="text-center">
-          <button
-            onClick={() => setCount(count + 1)}
-            className="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded"
+    <div className="min-h-screen flex flex-col bg-slate-50">
+      {/* Simple top navigation */}
+      <header className="sticky top-0 z-20 bg-white/80 backdrop-blur border-b border-slate-200">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 h-14 flex items-center justify-between">
+          <a href="#" className="font-semibold text-slate-900">Career90</a>
+          <nav className="hidden sm:flex items-center gap-6 text-sm text-slate-600">
+            <a href="#plan" className="hover:text-slate-900">Plan</a>
+            <a href="#readiness" className="hover:text-slate-900">Readiness</a>
+            <a href="#mentors" className="hover:text-slate-900">Mentors</a>
+          </nav>
+          <a
+            href="#plan"
+            className="rounded-lg bg-indigo-600 px-3 py-1.5 text-white text-sm hover:bg-indigo-500"
           >
-            Count is {count}
-          </button>
+            Get started
+          </a>
         </div>
-      </div>
+      </header>
+
+      <main className="flex-1">
+        <Hero />
+        <PlanBuilder />
+        <ReadinessTools />
+        <InviteMentors />
+      </main>
+
+      <footer className="bg-slate-900 text-slate-300">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8 flex flex-col sm:flex-row items-center justify-between gap-4">
+          <p className="text-sm">© {new Date().getFullYear()} Career90. All rights reserved.</p>
+          <div className="flex items-center gap-4 text-sm">
+            <a href="#plan" className="hover:text-white">Plan</a>
+            <a href="#readiness" className="hover:text-white">Readiness</a>
+            <a href="#mentors" className="hover:text-white">Mentors</a>
+          </div>
+        </div>
+      </footer>
     </div>
-  )
+  );
 }
 
-export default App
+export default App;
