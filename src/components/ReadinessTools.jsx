@@ -2,82 +2,69 @@ import { useState } from "react";
 import { FileText, Linkedin, Sparkles } from "lucide-react";
 
 export default function ReadinessTools() {
-  const [resumeNotes, setResumeNotes] = useState("");
-  const [linkedinNotes, setLinkedinNotes] = useState("");
+  const [resume, setResume] = useState("");
+  const [linkedin, setLinkedin] = useState("");
+  const [insights, setInsights] = useState([]);
 
-  const analyzeResume = () => {
-    // Placeholder local logic for UX; backend AI can be wired later via API
-    const tips = [
-      "Quantify achievements (%, $, #)",
-      "Use strong action verbs",
-      "Mirror keywords from target job descriptions",
-      "Keep to 1-2 pages with clear section headings",
-    ];
-    setResumeNotes(tips.join("\n• "));
-  };
-
-  const analyzeLinkedIn = () => {
-    const tips = [
-      "Headline: role + value proposition + niche",
-      "About: 3-4 impact paragraphs, include metrics",
-      "Add 5-10 featured items (projects, posts, media)",
-      "Open to Work with targeted titles & locations",
-    ];
-    setLinkedinNotes(tips.join("\n• "));
+  const analyze = () => {
+    const tips = [];
+    if (resume.length < 200) tips.push("Expand your resume bullets with quantified outcomes and relevant keywords.");
+    if (!/https?:\/\//.test(linkedin)) tips.push("Add a valid LinkedIn URL to enable richer networking features.");
+    if (!/\bimpact\b|\bresults\b|\bshipped\b/i.test(resume)) tips.push("Highlight measurable impact with action verbs (shipped, delivered, grew, reduced).");
+    if (tips.length === 0) tips.push("Looks solid. Consider role‑specific tailoring for the next application.");
+    setInsights(tips);
   };
 
   return (
-    <section id="readiness" className="bg-slate-50">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-16">
-        <div className="flex items-center gap-3">
-          <Sparkles className="h-5 w-5 text-indigo-600" />
-          <h2 className="text-xl sm:text-2xl font-semibold">Job readiness tools</h2>
+    <section id="readiness" className="bg-slate-50 py-16">
+      <div className="mx-auto max-w-6xl px-6">
+        <div className="mb-8">
+          <h2 className="text-2xl font-bold tracking-tight sm:text-3xl">Job‑Readiness Tools</h2>
+          <p className="mt-1 text-slate-600">Quick checks to strengthen your resume and LinkedIn profile.</p>
         </div>
 
-        <div className="mt-6 grid lg:grid-cols-2 gap-6">
-          <div className="rounded-xl border border-slate-200 bg-white p-4 sm:p-6">
-            <div className="flex items-center gap-2 font-medium">
-              <FileText className="h-5 w-5 text-slate-500" /> Resume analysis
+        <div className="grid gap-6 md:grid-cols-2">
+          <div className="rounded-lg border border-slate-200 bg-white p-4 sm:p-6">
+            <div className="mb-3 flex items-center gap-2 text-slate-700">
+              <FileText size={18} />
+              <span className="font-semibold">Resume insights</span>
             </div>
             <textarea
-              className="mt-4 w-full min-h-[160px] rounded-lg border border-slate-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
-              placeholder="Paste your resume text here"
+              value={resume}
+              onChange={(e) => setResume(e.target.value)}
+              placeholder="Paste your resume text here..."
+              rows={8}
+              className="w-full rounded-md border border-slate-300 p-3 text-sm outline-none focus:ring-2 focus:ring-indigo-400"
             />
-            <div className="mt-3 flex justify-end">
-              <button
-                onClick={analyzeResume}
-                className="rounded-lg bg-indigo-600 px-4 py-2 text-white text-sm hover:bg-indigo-500"
-              >
-                Generate insights
-              </button>
-            </div>
-            {resumeNotes && (
-              <div className="mt-4 rounded-lg bg-indigo-50 border border-indigo-200 p-4 text-sm whitespace-pre-wrap">
-                • {resumeNotes}
-              </div>
-            )}
           </div>
 
-          <div className="rounded-xl border border-slate-200 bg-white p-4 sm:p-6">
-            <div className="flex items-center gap-2 font-medium">
-              <Linkedin className="h-5 w-5 text-slate-500" /> LinkedIn profile feedback
+          <div className="rounded-lg border border-slate-200 bg-white p-4 sm:p-6">
+            <div className="mb-3 flex items-center gap-2 text-slate-700">
+              <Linkedin size={18} />
+              <span className="font-semibold">LinkedIn check</span>
             </div>
-            <textarea
-              className="mt-4 w-full min-h-[160px] rounded-lg border border-slate-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
-              placeholder="Paste your LinkedIn 'About' or key sections"
+            <input
+              value={linkedin}
+              onChange={(e) => setLinkedin(e.target.value)}
+              placeholder="https://www.linkedin.com/in/your-handle"
+              className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-indigo-400"
             />
-            <div className="mt-3 flex justify-end">
-              <button
-                onClick={analyzeLinkedIn}
-                className="rounded-lg bg-indigo-600 px-4 py-2 text-white text-sm hover:bg-indigo-500"
-              >
-                Generate insights
-              </button>
-            </div>
-            {linkedinNotes && (
-              <div className="mt-4 rounded-lg bg-indigo-50 border border-indigo-200 p-4 text-sm whitespace-pre-wrap">
-                • {linkedinNotes}
-              </div>
+
+            <button
+              onClick={analyze}
+              className="mt-4 inline-flex items-center gap-2 rounded-md bg-indigo-600 px-4 py-2 text-sm font-semibold text-white shadow hover:bg-indigo-700"
+            >
+              <Sparkles size={16} /> Analyze
+            </button>
+
+            {insights.length > 0 && (
+              <ul className="mt-4 space-y-2">
+                {insights.map((tip, i) => (
+                  <li key={i} className="rounded-md border border-slate-200 bg-slate-50 p-3 text-sm text-slate-700">
+                    {tip}
+                  </li>
+                ))}
+              </ul>
             )}
           </div>
         </div>
